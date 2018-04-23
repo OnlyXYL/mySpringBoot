@@ -14,8 +14,8 @@ import javax.annotation.Resource;
  */
 public class ModelRedisCacheService extends AbstractBaseRedisCacheService{
 
-    @Resource(name = "redisModelTemplateSingle")
-    private RedisTemplate redisTemplateSingle;
+    @Resource
+    private RedisTemplate redisTemplate;
 
   /*  @Resource(name = "redisModelTemplateCluster")
     private RedisTemplate redisTemplateCluster;*/
@@ -29,7 +29,7 @@ public class ModelRedisCacheService extends AbstractBaseRedisCacheService{
 //            return this.redisTemplateCluster;
             return null;
         } else if(RedisModelPropertiesUtil.getProperty("model.openCluster").equals("false")){
-            return this.redisTemplateSingle;
+            return this.redisTemplate;
         }
         return null;
     }

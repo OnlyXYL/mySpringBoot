@@ -17,8 +17,8 @@ import java.util.concurrent.TimeUnit;
  */
 public class SessionRedisCacheService extends AbstractBaseRedisCacheService {
 
-    @Resource(name = "redisSessionTemplateSingle")
-    private RedisTemplate redisTemplateSingle;
+    @Resource
+    private RedisTemplate redisTemplate;
 
 //    @Resource(name = "redisSessionTemplateCluster")
 //    private RedisTemplate redisTemplateCluster;
@@ -32,7 +32,7 @@ public class SessionRedisCacheService extends AbstractBaseRedisCacheService {
 //            return this.redisTemplateCluster;
             return null;
         } else if (RedisSessionPropertiesUtil.getProperty("session.openCluster").equals("false")) {
-            return this.redisTemplateSingle;
+            return this.redisTemplate;
         }
         return null;
     }
