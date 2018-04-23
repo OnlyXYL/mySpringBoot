@@ -38,19 +38,19 @@ public class JedisConnectionFactoryConfig {
     @Resource
     private JedisPoolConfig jedisPoolConfig;
 
-  /*  @Resource(name = "modelRedisClusterConfiguration")
+    @Resource(name = "modelRedisClusterConfiguration")
     private RedisClusterConfiguration modelRedisClusterConfiguration;
 
     @Resource(name = "sessionRedisClusterConfiguration")
-    private RedisClusterConfiguration sessionRedisClusterConfiguration;*/
+    private RedisClusterConfiguration sessionRedisClusterConfiguration;
 
     @Value("${redis.timeout}")
     private int timeout;
 
-//    @Value("${redis.model.password}")
-//    private String modelPassword;
+  /*  @Value("${redis.model.password}")
+    private String modelPassword;*/
 
- /*   @Value("${redis.session.password}")
+   /* @Value("${redis.session.password}")
     private String sessionPassword;*/
 
     /**
@@ -78,13 +78,13 @@ public class JedisConnectionFactoryConfig {
      * @author XiaYaLing
      * @date 2018/4/23
      */
-  /*  @Bean
+    @Bean
     public JedisConnectionFactory modelConnectionFactoryCluster() {
         JedisConnectionFactory jedisConnectionFactory = new JedisConnectionFactory(modelRedisClusterConfiguration, jedisPoolConfig);
         jedisConnectionFactory.setTimeout(timeout);
-        jedisConnectionFactory.setPassword(modelPassword);
+//        jedisConnectionFactory.setPassword(modelPassword);
         return jedisConnectionFactory;
-    }*/
+    }
 
 
     /**
@@ -113,11 +113,11 @@ public class JedisConnectionFactoryConfig {
      * @author XiaYaLing
      * @date 2018/4/23
      */
-/*    @Bean
+    @Bean
     public JedisConnectionFactory sessionConnectionFactoryCluster() {
         JedisConnectionFactory jedisConnectionFactory = new JedisConnectionFactory(sessionRedisClusterConfiguration, jedisPoolConfig);
         jedisConnectionFactory.setTimeout(timeout);
-        jedisConnectionFactory.setPassword(sessionPassword);
+//        jedisConnectionFactory.setPassword(sessionPassword);
         return jedisConnectionFactory;
-    }*/
+    }
 }

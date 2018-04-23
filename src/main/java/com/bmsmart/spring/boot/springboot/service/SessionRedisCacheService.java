@@ -20,8 +20,8 @@ public class SessionRedisCacheService extends AbstractBaseRedisCacheService {
     @Resource(name = "redisSessionTemplateSingle")
     private RedisTemplate redisTemplateSingle;
 
-//    @Resource(name = "redisSessionTemplateCluster")
-//    private RedisTemplate redisTemplateCluster;
+    @Resource(name = "redisSessionTemplateCluster")
+    private RedisTemplate redisTemplateCluster;
 
     @Override
     public RedisTemplate getRedisTemplate() {
@@ -29,8 +29,7 @@ public class SessionRedisCacheService extends AbstractBaseRedisCacheService {
          * 判断是 redis 单节点还是集群
          */
         if (RedisSessionPropertiesUtil.getProperty("session.openCluster").equals("true")) {
-//            return this.redisTemplateCluster;
-            return null;
+            return this.redisTemplateCluster;
         } else if (RedisSessionPropertiesUtil.getProperty("session.openCluster").equals("false")) {
             return this.redisTemplateSingle;
         }

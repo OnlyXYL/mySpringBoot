@@ -17,8 +17,8 @@ public class ModelRedisCacheService extends AbstractBaseRedisCacheService{
     @Resource(name = "redisModelTemplateSingle")
     private RedisTemplate redisTemplateSingle;
 
-  /*  @Resource(name = "redisModelTemplateCluster")
-    private RedisTemplate redisTemplateCluster;*/
+    @Resource(name = "redisModelTemplateCluster")
+    private RedisTemplate redisTemplateCluster;
 
     @Override
     public RedisTemplate getRedisTemplate() {
@@ -26,8 +26,7 @@ public class ModelRedisCacheService extends AbstractBaseRedisCacheService{
          * 判断是 redis 单节点还是集群
          */
         if (RedisModelPropertiesUtil.getProperty("model.openCluster").equals("true")) {
-//            return this.redisTemplateCluster;
-            return null;
+            return this.redisTemplateCluster;
         } else if(RedisModelPropertiesUtil.getProperty("model.openCluster").equals("false")){
             return this.redisTemplateSingle;
         }

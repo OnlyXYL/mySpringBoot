@@ -24,21 +24,26 @@ public class RedisTemplateConfig {
     @Resource(name = "modelConnectionFactorySingle")
     private JedisConnectionFactory modelConnectionFactorySingle;
 
-//    @Resource(name = "modelConnectionFactoryCluster")
-//    private JedisConnectionFactory modelConnectionFactoryCluster;
+    @Resource(name = "modelConnectionFactoryCluster")
+    private JedisConnectionFactory modelConnectionFactoryCluster;
 
     @Resource(name = "sessionConnectionFactorySingle")
     private JedisConnectionFactory sessionConnectionFactorySingle;
 
-//    @Resource(name = "sessionConnectionFactoryCluster")
-//    private JedisConnectionFactory sessionConnectionFactoryCluster;
+    @Resource(name = "sessionConnectionFactoryCluster")
+    private JedisConnectionFactory sessionConnectionFactoryCluster;
 
-    /*@Autowired(required=true)
     private StringRedisSerializer stringRedisSerializer;
 
-    @Autowired(required=true)
     private JdkSerializationRedisSerializer jdkSerializationRedisSerializer;
-*/
+
+    RedisTemplateConfig()
+
+    {
+        stringRedisSerializer = new StringRedisSerializer();
+        jdkSerializationRedisSerializer = new JdkSerializationRedisSerializer();
+    }
+
     /**
      * 单节点 redis操作 Model 模板
      *
@@ -51,8 +56,8 @@ public class RedisTemplateConfig {
     public RedisTemplate redisModelTemplateSingle() {
         RedisTemplate redisTemplate = new RedisTemplate();
         redisTemplate.setConnectionFactory(modelConnectionFactorySingle);
-//        redisTemplate.setKeySerializer(stringRedisSerializer);
-//        redisTemplate.setValueSerializer(jdkSerializationRedisSerializer);
+        redisTemplate.setKeySerializer(stringRedisSerializer);
+        redisTemplate.setValueSerializer(jdkSerializationRedisSerializer);
         return redisTemplate;
     }
 
@@ -64,14 +69,14 @@ public class RedisTemplateConfig {
      * @author XiaYaLing
      * @date 2018/4/23
      */
-  /*  @Bean
+    @Bean
     public RedisTemplate redisModelTemplateCluster() {
         RedisTemplate redisTemplate = new RedisTemplate();
         redisTemplate.setConnectionFactory(modelConnectionFactoryCluster);
-//        redisTemplate.setKeySerializer(stringRedisSerializer);
-//        redisTemplate.setValueSerializer(jdkSerializationRedisSerializer);
+        redisTemplate.setKeySerializer(stringRedisSerializer);
+        redisTemplate.setValueSerializer(jdkSerializationRedisSerializer);
         return redisTemplate;
-    }*/
+    }
 
     /**
      * 单节点 redis操作 Session 模板
@@ -85,8 +90,8 @@ public class RedisTemplateConfig {
     public RedisTemplate redisSessionTemplateSingle() {
         RedisTemplate redisTemplate = new RedisTemplate();
         redisTemplate.setConnectionFactory(sessionConnectionFactorySingle);
-//        redisTemplate.setKeySerializer(stringRedisSerializer);
-//        redisTemplate.setValueSerializer(jdkSerializationRedisSerializer);
+        redisTemplate.setKeySerializer(stringRedisSerializer);
+        redisTemplate.setValueSerializer(jdkSerializationRedisSerializer);
         return redisTemplate;
     }
 
@@ -98,12 +103,12 @@ public class RedisTemplateConfig {
      * @author XiaYaLing
      * @date 2018/4/23
      */
-  /*  @Bean
+    @Bean
     public RedisTemplate redisSessionTemplateCluster() {
         RedisTemplate redisTemplate = new RedisTemplate();
         redisTemplate.setConnectionFactory(sessionConnectionFactoryCluster);
-//        redisTemplate.setKeySerializer(stringRedisSerializer);
-//        redisTemplate.setValueSerializer(jdkSerializationRedisSerializer);
+        redisTemplate.setKeySerializer(stringRedisSerializer);
+        redisTemplate.setValueSerializer(jdkSerializationRedisSerializer);
         return redisTemplate;
-    }*/
+    }
 }
