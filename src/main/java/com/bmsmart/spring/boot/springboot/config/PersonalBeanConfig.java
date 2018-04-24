@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 
 @Configuration
-@PropertySource({"classpath:redis_model.properties","classpath:redis_common.properties","classpath:redis_session.properties"})
+@PropertySource({"classpath:redis_model.properties", "classpath:redis_common.properties", "classpath:redis_session.properties"})
 public class PersonalBeanConfig {
 
     @Value("${redis.model.expireTime}")

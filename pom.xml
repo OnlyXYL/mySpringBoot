@@ -6,7 +6,7 @@
     <groupId>com.bmsmart.spring.boot</groupId>
     <artifactId>springboot</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <packaging>jar</packaging>
+    <packaging>war</packaging>
 
     <name>springboot</name>
     <description>Demo project for Spring Boot</description>
@@ -159,6 +159,12 @@
             <artifactId>shiro-spring</artifactId>
             <version>${shiro.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-tomcat</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
         <!--spring-->
         <!--<dependency>
             <groupId>org.springframework</groupId>
