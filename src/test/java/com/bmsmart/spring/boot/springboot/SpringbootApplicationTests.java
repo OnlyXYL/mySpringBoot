@@ -1,7 +1,6 @@
-/*
 package com.bmsmart.spring.boot.springboot;
 
-import com.bmsmart.spring.boot.springboot.helloworld.HelloWorldController;
+import com.bmsmart.spring.boot.springboot.controller.HelloWorldController;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,15 +16,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 
-*/
-/**
- * 以Mock方式测试Controller
- *
- * @param
- * @author XiaYaLing
- * @date 2018/4/12
- * @return
- *//*
+
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -52,4 +43,3 @@ public class SpringbootApplicationTests {
 
 
 }
-*/
