@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>springboot-thymeleaf demo</title>
+</head>
+<body>
+<p th:text="'hello, ' + ${user.name} + '!'" />
+
+<p th:text="'hello, ' + ${haha} + '!'" />
+
+<p th:text="'hello, ' + *{haha} + '!'" />
+
+<p th:text="'hello, ' + *{user.name} + '!'" />
+
+<!--除了邮箱为空之外，显示，即，有值才显示-->
+<div th:unless="${#lists.isEmpty(user.email)}">
+    邮箱是空的
+</div>
+
+</body>
+</html>

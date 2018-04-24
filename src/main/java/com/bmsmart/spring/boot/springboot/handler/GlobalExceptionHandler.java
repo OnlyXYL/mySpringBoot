@@ -1,0 +1,43 @@
+package com.bmsmart.spring.boot.springboot.handler;
+
+import com.bmsmart.spring.boot.springboot.exception.BusinessException;
+import com.bmsmart.spring.boot.springboot.exception.SystemException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.servlet.http.HttpServletRequest;
+/**
+ * 全局异常处理
+ *
+ * @author XiaYaLing
+ * @date 2018/4/25
+ * @param
+ * @return
+ */
+
+/**
+ * ControllerAdvice, 表示 GlobalExceptionHandler 是一个全局的异常处理器.
+ * 需要注意的是, ExceptionHandler 的优先级比 ControllerAdvice 高, 即 Controller 抛出的异常如果既可以让 ExceptionHandler 标注的方法处理,
+ * 又可以让 ControllerAdvice 标注的类中的方法处理, 则优先让 ExceptionHandler 标注的方法处理.
+ */
+@ControllerAdvice
+public class GlobalExceptionHandler {
+    private Logger logger = LoggerFactory.getLogger("GlobalExceptionHandler");
+
+    @ExceptionHandler(value = BusinessException.class)
+    @ResponseBody
+    public Object businessErrorHandler(HttpServletRequest req, BusinessException e) throws Exception {
+        logger.error("---BusinessException Handler---Host {} invokes url {} ERROR: {}", req.getRemoteHost(), req.getRequestURL(), e.getMessage());
+        return e.getJsonResult();
+    }
+
+    @ExceptionHandler(value = SystemException.class)
+    @ResponseBody
+    public Object systemErrorHandler(HttpServletRequest req, SystemException e) throws Exception {
+        logger.error("---SystemException Handler---Host {} invokes url {} ERROR: {}", req.getRemoteHost(), req.getRequestURL(), e.getMessage());
+        return e.getJsonResult();
+    }
+}

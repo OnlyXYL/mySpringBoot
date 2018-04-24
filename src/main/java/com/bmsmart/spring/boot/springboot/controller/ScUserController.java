@@ -1,8 +1,13 @@
 package com.bmsmart.spring.boot.springboot.controller;
 
+import com.bmsmart.spring.boot.springboot.config.RemoteProperties;
+import com.bmsmart.spring.boot.springboot.exception.BusinessException;
+import com.bmsmart.spring.boot.springboot.model.JsonResult;
 import com.bmsmart.spring.boot.springboot.model.SCUser;
 import com.bmsmart.spring.boot.springboot.service.ModelRedisCacheService;
 import com.bmsmart.spring.boot.springboot.service.ScUserService;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -14,12 +19,20 @@ import java.util.Map;
 
 /**
  * @RestController 就是@Controller+@ResponseBody组合，支持RESTful访问方式，返回结果都是json字符串
+ * @Slf4j 相当于private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(LogExample.class);
+ *
+ * @EnableConfigurationProperties 网上说是为了使@ConfigurationProperties生效，但是，验证好像不同这个注解也没问题啊。。。。。。。
  */
 @RestController
+@EnableConfigurationProperties(RemoteProperties.class)
+@Slf4j
 public class ScUserController {
 
     @Resource
     private ScUserService scUserService;
+
+    @Resource
+    RemoteProperties remoteProperties;
 
     @Resource
     private ModelRedisCacheService modelRedisCacheService;
@@ -36,7 +49,9 @@ public class ScUserController {
      */
 
     @RequestMapping(value = "/{userId}", method = RequestMethod.GET)
-    public SCUser getUser(@PathVariable String userId) {
+    public String getUser(@PathVariable String userId) {
+
+        log.debug(this.getClass().getName() + ":::这个东西怎么用？？？？:::");
 
         Map<String, String> hashMap = new HashMap<>();
 
@@ -44,7 +59,19 @@ public class ScUserController {
 
         SCUser user = scUserService.getUser(hashMap);
 
-        return user;
+
+        String notFoundUser = "";
+        if (user == null) {
+
+            //测试读取属性文件中信息
+            notFoundUser = remoteProperties.getNotFoundUser();
+
+            JsonResult jsonResult = new JsonResult();
+            jsonResult.error(remoteProperties.getBusinessErrorMsg(), this.getClass().getName());
+
+            throw new BusinessException(jsonResult);
+        }
+        return notFoundUser;
     }
 
     /**
