@@ -21,11 +21,13 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 public class HelloWorldController {
 
+/*
     @RequestMapping("/hello")
     public String hello(HttpServletRequest request, @RequestParam(value = "name", required = false, defaultValue = "springboot-thymeleaf") String name) {
         request.setAttribute("name", name);
         return "hello";
     }
+*/
 
 
 }
