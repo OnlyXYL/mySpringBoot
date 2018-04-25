@@ -20,11 +20,13 @@ import java.util.Map;
 /**
  * @RestController 就是@Controller+@ResponseBody组合，支持RESTful访问方式，返回结果都是json字符串
  * @Slf4j 相当于private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(LogExample.class);
- *
- * @EnableConfigurationProperties 网上说是为了使@ConfigurationProperties生效，但是，验证好像不同这个注解也没问题啊。。。。。。。
+ * @EnableConfigurationProperties 网上说是为了使@ConfigurationProperties 生效，但是，验证好像不同这个注解也没问题啊。。。。。。。
+ * <p>
+ * 如果项目中引用了spring-boot-starter-web 则可以去掉该注解。因为 spring-boot-starter-web中引用的有jackson,jackson中有@EnableConfigurationProperties，
+ * 注册@EnableConfigurationProperties 的时候，会扫描所有的@ConfigurationProperties
  */
 @RestController
-@EnableConfigurationProperties(RemoteProperties.class)
+//@EnableConfigurationProperties(RemoteProperties.class)
 @Slf4j
 public class ScUserController {
 

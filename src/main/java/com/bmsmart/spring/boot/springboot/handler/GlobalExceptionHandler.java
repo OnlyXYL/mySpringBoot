@@ -2,6 +2,7 @@ package com.bmsmart.spring.boot.springboot.handler;
 
 import com.bmsmart.spring.boot.springboot.exception.BusinessException;
 import com.bmsmart.spring.boot.springboot.exception.SystemException;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -24,20 +25,20 @@ import javax.servlet.http.HttpServletRequest;
  * 又可以让 ControllerAdvice 标注的类中的方法处理, 则优先让 ExceptionHandler 标注的方法处理.
  */
 @ControllerAdvice
+@Slf4j
 public class GlobalExceptionHandler {
-    private Logger logger = LoggerFactory.getLogger("GlobalExceptionHandler");
 
     @ExceptionHandler(value = BusinessException.class)
     @ResponseBody
     public Object businessErrorHandler(HttpServletRequest req, BusinessException e) throws Exception {
-        logger.error("---BusinessException Handler---Host {} invokes url {} ERROR: {}", req.getRemoteHost(), req.getRequestURL(), e.getMessage());
+        log.debug("---BusinessException Handler---Host {} invokes url {} ERROR: {}", req.getRemoteHost(), req.getRequestURL(), e.getMessage());
         return e.getJsonResult();
     }
 
     @ExceptionHandler(value = SystemException.class)
     @ResponseBody
     public Object systemErrorHandler(HttpServletRequest req, SystemException e) throws Exception {
-        logger.error("---SystemException Handler---Host {} invokes url {} ERROR: {}", req.getRemoteHost(), req.getRequestURL(), e.getMessage());
+        log.debug("---SystemException Handler---Host {} invokes url {} ERROR: {}", req.getRemoteHost(), req.getRequestURL(), e.getMessage());
         return e.getJsonResult();
     }
 }

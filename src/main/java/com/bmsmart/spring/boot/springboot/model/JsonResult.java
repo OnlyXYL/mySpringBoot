@@ -38,17 +38,20 @@ public class JsonResult implements java.io.Serializable {
      */
     private String content;
 
+    /**
+     * 数据
+     */
     private Object data;
 
     /**
-     * 初始化一个新创建的 Message 对象，使其表示一个空消息。
+     * 初始化一个新创建的 JsonResult 对象，使其表示一个空消息。
      */
     public JsonResult() {
 
     }
 
     /**
-     * 初始化一个新创建的 Message 对象
+     * 初始化一个新创建的 JsonResult 对象
      *
      * @param type    类型
      * @param content 内容
