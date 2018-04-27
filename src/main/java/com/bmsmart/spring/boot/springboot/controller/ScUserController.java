@@ -7,7 +7,6 @@ import com.bmsmart.spring.boot.springboot.model.SCUser;
 import com.bmsmart.spring.boot.springboot.service.ModelRedisCacheService;
 import com.bmsmart.spring.boot.springboot.service.ScUserService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -28,6 +27,7 @@ import java.util.Map;
 @RestController
 //@EnableConfigurationProperties(RemoteProperties.class)
 @Slf4j
+@RequestMapping(value = "/user")
 public class ScUserController {
 
     @Resource
@@ -36,19 +36,6 @@ public class ScUserController {
     @Resource
     RemoteProperties remoteProperties;
 
-    @Resource
-    private ModelRedisCacheService modelRedisCacheService;
-
-    /**
-     * {
-     *
-     * @param userId
-     * @return
-     * @RequestMapping(value="/{user}", method=RequestMethod.GET)
-     * public User getUser(@PathVariable Long user) {
-     * // ...
-     * }
-     */
 
     @RequestMapping(value = "/{userId}", method = RequestMethod.GET)
     public String getUser(@PathVariable String userId) {
@@ -76,22 +63,5 @@ public class ScUserController {
         return notFoundUser;
     }
 
-    /**
-     * 测试redis
-     *
-     * @param params
-     * @return java.lang.String
-     * @author XiaYaLing
-     * @date 2018/4/23
-     */
-    @RequestMapping(value = "/redis/{params}", method = RequestMethod.GET)
-    public String testRedis(@PathVariable String params) {
-
-        modelRedisCacheService.setCacheObject("redis", params);
-
-        String redis = modelRedisCacheService.getCacheObject("redis");
-
-        return redis;
-    }
 
 }

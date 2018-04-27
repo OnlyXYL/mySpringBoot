@@ -1,9 +1,14 @@
 package com.bmsmart.spring.boot.springboot.config;
 
+import com.bmsmart.spring.boot.springboot.util.MessageUtil;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
+
+import javax.annotation.Resource;
+import java.lang.ref.PhantomReference;
+import java.lang.ref.WeakReference;
 
 /**
  * 获取属性文件中的配置信息，例如，用来配置页面显示的提示信息
@@ -26,7 +31,16 @@ import org.springframework.stereotype.Component;
 @Data
 @Component
 public class RemoteProperties {
+
+//    @Resource
+//    private MessageUtil messageUtil;
+
     private String notFoundUser;
     private String businessErrorMsg;
     private String sysErrorMsg;
+
+//    private RemoteProperties() {
+//        MessageUtil.loadProperty(this);
+//    }
+
 }

@@ -1,210 +1,103 @@
 package com.bmsmart.spring.boot.springboot.util;
 
+import com.bmsmart.spring.boot.springboot.config.RemoteProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.PropertiesFactoryBean;
+import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import java.io.*;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Desc:properties文件获取工具类 Created by yangcao
+ * 获取属性信息
+ * <p>
+ * 问题背景：MessageUtil 中注入 RemoteProperties（RemoteProperties 需要被static 修饰）
+ * 1.第一次 MessageUtil 没有加@Component注解 ，注入RemoteProperties 为空，我觉得是因为MessageUtil没有被spring 管理的原因
+ * 2.第二次 MessageUtil加上@Component注解（即交给了spring管理）,@resource注解注入报错，@Autowired注解注入为空，
+ * <p>
+ * 从Java EE5规范开始，Servlet增加了两个影响Servlet生命周期的注解（Annotation）：@PostConstruct和@PreConstruct。这两个注解被用来修饰一个非静态的void()方法.而且这个方法不能有抛出异常声明。
+ * 被@PostConstruct修饰的方法会在服务器加载Servlet的时候运行，并且只会被服务器调用一次，类似于Serclet的inti()方法。被@PostConstruct修饰的方法会在构造函数之后，init()方法之前运行。
+ *
+ * @param
+ * @author XiaYaLing
+ * @date 2018/4/26
+ * @return
  */
+@Component
 public class MessageUtil {
-    private static final Logger logger = LoggerFactory.getLogger(MessageUtil.class);
-    private static Properties props;
+
+    @Autowired
+    private RemoteProperties remoteProperties;
+
+    public static RemoteProperties properties;
+
     private static Map<String, String> map;
-    private String lineConfigTxt;
-    public BufferedReader br = null;
-    private Properties config = null;
 
-
-    @Resource
-    private static PropertiesFactoryBean configProperties;
-
-    public static PropertiesFactoryBean getConfigProperties() {
-        return configProperties;
+    @PostConstruct
+    public void getRemoteProperties() {
+        properties = remoteProperties;
     }
 
-    public static void loadProps() {
-        logger.info("开始加载properties文件内容.......");
+    public static Map<String, String> loadProperty(/*RemoteProperties properties*/) {
+
+//        remoteProperties = properties;
+
         map = new HashMap<>();
-        props = new Properties();
-        InputStreamReader in = null;
-        try {
-            in = new InputStreamReader(MessageUtil.class.getClassLoader().getResourceAsStream("message.properties"), "UTF-8");
-             /*	in = new InputStreamReader(PropertyUtil.class.getClassLoader().getResourceAsStream("system.properties"),
-                         "UTF-8");*/
-            // 第二种，通过类进行获取properties文件流
-            // in = PropertyUtil.class.getResourceAsStream("/jdbc.properties");
-            props.load(in);
-            Enumeration en = props.propertyNames();
-            while (en.hasMoreElements()) {
-                String key = (String) en.nextElement();
-                String property = props.getProperty(key);
-                map.put(key, property);
-            }
 
-        } catch (FileNotFoundException e) {
-            logger.error("message.properties文件未找到");
-        } catch (IOException e) {
-            logger.error("出现IOException");
-        } finally {
-            try {
-                if (null != in) {
-                    in.close();
-                }
-            } catch (IOException e) {
-                logger.error("message.properties文件流关闭出现异常");
-            }
+        //获取属性名数组
+        Field[] fields = properties.getClass().getDeclaredFields();
+        String[] fieldNames = new String[fields.length];
+        for (int i = 0; i < fields.length; i++) {
+            System.out.println(fields[i].getType());
+            fieldNames[i] = fields[i].getName();
+            String value = getFieldValueByName(fieldNames[i], properties);
+            map.put(fieldNames[i], value);
         }
-        logger.info("加载properties文件内容完成...........");
-        logger.info("properties文件内容：" + props);
+        return map;
     }
 
-    public static String getProperty(String key) {
-        if (null == props && null == map) {
-            loadProps();
-        }
-        return map.get(key);
-    }
-
-    public static String getProperty(String key, String defaultValue) {
-        if (null == props && null == map) {
-            loadProps();
-        }
-        return props.getProperty(key, defaultValue);
-    }
-
-    /****
-     * 用值填充属性文件中的占位符{0},{1}...,值的顺序必须和参数的顺序是一致的
+    /**
+     * 根据属性名称获取对应的属性值（通过get方法）
      *
-     * @param key
-     *            属性文件中的键值
-     * @param values
-     *            对应属性文件中的占位符的信息
-     * @return 将占位符中的信息对应填充后的字符串
+     * @param fieldName
+     * @param properties
+     * @return java.lang.String
+     * @author XiaYaLing
+     * @date 2018/4/26
      */
-    public static String getProperty(String key, String... values) {
-        // 对应占位符参数值
-        String[] vs = values;
-        // 属性文件中的值
-        String v = getProperty(key);
-
-        // 如果没有参数
-        if (vs == null || vs.length == 0) {
-            return getProperty(key);
-        }
-
-        // 如果属性文件中没有值,则返回空字符串
-        if (v == null) {
-            return "";
-        }
-
-        StringBuffer buffer = new StringBuffer();
-
-        // 遍历参数数组
-        for (int i = 0; i < vs.length; i++) {
-            // 替换前清空原有替换值
-            buffer.delete(0, buffer.length());
-            Pattern pattern = Pattern.compile("\\{" + i + "\\}");
-            Matcher matcher = pattern.matcher(v);
-            while (matcher.find()) {
-                matcher.appendReplacement(buffer, vs[i]);
-            }
-            matcher.appendTail(buffer);
-            // 进行下一次替换
-            v = buffer.toString();
-        }
-        // 返回后替换的字符串
-        return buffer.toString();
-    }
-
-    /**
-     * <pre>
-     * 此时的configFilePath若是非普通文件，即properties文件的话，要另行处理
-     * @param configFilePath
-     * @param isConfig
-     * @param encoding
-     */
-    public MessageUtil(String configFilePath, boolean isConfig, String encoding) {
-        InputStream in = null;
-        in = MessageUtil.class.getClassLoader().getResourceAsStream(configFilePath);
+    private static String getFieldValueByName(String fieldName, RemoteProperties properties) {
         try {
-            if (isConfig) {
-                config = new Properties();
-                config.load(in);
-                in.close();
-            } else {
-                br = new BufferedReader(new InputStreamReader(in, encoding));
-                this.lineConfigTxt = getTextLines(br);
-            }
-        } catch (IOException e) {
-            logger.error("读取配置文件异常: {}", e.getMessage());
-        }
-    }
-
-    // 测试方法
-    public static void main(String[] args) {
-        System.out.println(getProperty("系统管理"));
-    }
-
-    public String getLineConfigTxt() {
-        return lineConfigTxt;
-    }
-
-    public void setLineConfigTxt(String lineConfigTxt) {
-        this.lineConfigTxt = lineConfigTxt;
-    }
-
-    /**
-     * <pre>
-     * <p>Description:  读取text文本内容</p>
-     * @author wusong
-     * @date 2016年8月23日上午11:08:51
-     * @return String
-     * @return
-     */
-    private String getTextLines(BufferedReader br) {
-        StringBuilder sb = new StringBuilder();
-        String temp = null;
-        try {
-            while ((temp = br.readLine()) != null) {
-                if (temp.trim().length() > 0 && (!temp.trim().startsWith("#"))) {
-                    sb.append(temp);
-                    sb.append("\n");
-                }
-            }
-            br.close();
-            return sb.toString();
+            String firstLetter = fieldName.substring(0, 1).toUpperCase();
+            String getter = "get" + firstLetter + fieldName.substring(1);
+            Method method = properties.getClass().getMethod(getter, new Class[]{});
+            Object value = method.invoke(properties, new Object[]{});
+            return value.toString();
         } catch (Exception e) {
-            e.printStackTrace();
-            logger.error("读取配置文件异常: {}", e.getMessage());
-        }
-        return sb.toString();
-    }
-
-    /**
-     * <pre>
-     * <p>Description:  获取属性文件中的值</p>
-     * @author wusong
-     * @date 2016年8月23日上午11:09:07
-     * @return String
-     * @param key
-     * @return
-     */
-    public String getValue(String key) {
-        try {
-            String value = config.getProperty(key);
-            return value;
-        } catch (Exception e) {
-            e.printStackTrace();
-            logger.error("获取值出现异常: {}", e.getMessage());
             return null;
         }
+    }
+
+    /**
+     * 根据key 获取配置文件信息
+     *
+     * @param key
+     * @return java.lang.String
+     * @author XiaYaLing
+     * @date 2018/4/26
+     */
+    public static String getProperty(String key) {
+        if (null == map) {
+            loadProperty(/*remoteProperties*/);
+        }
+        return map.get(key);
     }
 
 }

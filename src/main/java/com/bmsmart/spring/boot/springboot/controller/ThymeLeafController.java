@@ -1,7 +1,10 @@
 package com.bmsmart.spring.boot.springboot.controller;
 
+import com.bmsmart.spring.boot.springboot.config.RemoteProperties;
+import com.bmsmart.spring.boot.springboot.exception.BusinessException;
 import com.bmsmart.spring.boot.springboot.model.SCUser;
 import com.bmsmart.spring.boot.springboot.service.ScUserService;
+import com.bmsmart.spring.boot.springboot.util.MessageUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,7 +16,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Controller
+@RequestMapping(value = "/thymeleaf")
 public class ThymeLeafController {
+
+    @Resource
+    RemoteProperties remoteProperties;
 
     @Resource
     private ScUserService scUserService;
@@ -25,7 +32,7 @@ public class ThymeLeafController {
         return mv;
     }
 
-    @RequestMapping(value = "/thymeleaf/{userId}")
+    @RequestMapping(value = "/{userId}")
     public String hello(HttpServletRequest request, @PathVariable String userId) {
 
         Map<String, String> hashMap = new HashMap<>();
@@ -33,9 +40,13 @@ public class ThymeLeafController {
         hashMap.put("userId", userId);
 
         SCUser user = scUserService.getUser(hashMap);
+        if (user == null) {
+            throw new BusinessException(MessageUtil.getProperty("businessErrorMsg"));
+        }
 
         request.setAttribute("user", user);
         request.setAttribute("haha", "哈哈");
+
         return "hello2";
     }
 }
