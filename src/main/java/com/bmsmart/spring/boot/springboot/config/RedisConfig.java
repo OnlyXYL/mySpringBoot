@@ -14,12 +14,15 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 import java.lang.reflect.Method;
 
-/**
- * @author zhujinmin6
- */
+/**  
+ *    
+ * @author XiaYaLing  
+ * @date 2018/5/8 
+ * @param
+ * @return   
+ */  
 @Configuration
 @EnableAutoConfiguration
-//@EnableCaching //加上这个注解是的支持缓存注解
 @PropertySource("classpath:redis_session.properties")
 public class RedisConfig extends CachingConfigurerSupport {
 

@@ -32,15 +32,7 @@ import java.lang.ref.WeakReference;
 @Component
 public class RemoteProperties {
 
-//    @Resource
-//    private MessageUtil messageUtil;
-
     private String notFoundUser;
     private String businessErrorMsg;
     private String sysErrorMsg;
-
-//    private RemoteProperties() {
-//        MessageUtil.loadProperty(this);
-//    }
-
 }

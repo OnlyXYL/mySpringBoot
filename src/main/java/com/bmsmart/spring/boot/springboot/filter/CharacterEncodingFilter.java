@@ -1,18 +1,14 @@
 package com.bmsmart.spring.boot.springboot.filter;
 
-import com.bmsmart.spring.boot.springboot.util.LogUtil;
 import lombok.extern.slf4j.Slf4j;
 
-import java.io.IOException;
-
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
+import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequestWrapper;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 
 /**
  * 编码拦截器
@@ -22,20 +18,6 @@ import javax.servlet.http.HttpServletRequest;
  * @date 2018/4/24
  * @return
  */
-
-
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * 处理全站乱码问题
@@ -71,9 +53,7 @@ public class CharacterEncodingFilter implements Filter {
     }
 
     /**
-     * <p><b>Function:     使用包装设计模式处理get方式的请求乱码
-     * </b></p>Class Name: CharacterEncodingHttpServletRequest<br/>
-     * Date:2016-12-13下午3:45:29<br/>author:Administrator<br/>since: JDK 1.6<br/>
+     * 使用包装设计模式处理get方式的请求乱码
      */
     class CharacterEncodingHttpServletRequest extends HttpServletRequestWrapper {
         private HttpServletRequest request;

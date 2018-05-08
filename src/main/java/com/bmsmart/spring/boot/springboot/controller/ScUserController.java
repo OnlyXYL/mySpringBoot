@@ -25,7 +25,6 @@ import java.util.Map;
  * 注册@EnableConfigurationProperties 的时候，会扫描所有的@ConfigurationProperties
  */
 @RestController
-//@EnableConfigurationProperties(RemoteProperties.class)
 @Slf4j
 @RequestMapping(value = "/user")
 public class ScUserController {
@@ -60,7 +59,7 @@ public class ScUserController {
 
             throw new BusinessException(jsonResult);
         }
-        return notFoundUser;
+        return user.toString();
     }
 
 
