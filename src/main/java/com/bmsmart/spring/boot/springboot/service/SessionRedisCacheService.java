@@ -9,10 +9,11 @@ import javax.annotation.Resource;
 import java.util.concurrent.TimeUnit;
 
 /**
- *    session缓存操作服务
+ * session缓存操作服务
+ *
+ * @param
  * @author XiaYaLing
  * @date 2018/1/16
- * @param
  * @return
  */
 public class SessionRedisCacheService extends AbstractBaseRedisCacheService {
@@ -38,27 +39,29 @@ public class SessionRedisCacheService extends AbstractBaseRedisCacheService {
     }
 
     /**
-     *    缓存session
+     * 缓存session
+     *
+     * @param key
+     * @param session
+     * @return void
      * @author XiaYaLing
      * @date 2018/1/16
-     * @param key
-     * @param session
-     * @return void
      */
-    public void setCacheSession(String key,Session session){
+    public void setCacheSession(String key, Session session) {
         BoundValueOperations<String, Object> sessionValueOperations = this.getRedisTemplate().boundValueOps("shiro_session_" + key);
         sessionValueOperations.set(session);
         sessionValueOperations.expire(this.getExpireTime(), TimeUnit.SECONDS);
     }
 
     /**
-     *    获取缓存session
-     * @author XiaYaLing
-     * @date 2018/1/16
+     * 获取缓存session
+     *
      * @param key
      * @return org.apache.shiro.session.Session
+     * @author XiaYaLing
+     * @date 2018/1/16
      */
-    public Session getCacheSession(String key){
+    public Session getCacheSession(String key) {
 
         BoundValueOperations<String, Object> sessionValueOperations = this.getRedisTemplate().boundValueOps("shiro_session_" + key);
         return (Session) sessionValueOperations.get();

@@ -16,7 +16,6 @@ import java.io.Serializable;
  */
 public class Relationship implements Serializable {
 
-    //    private String relationship;
     private String text;
 
     private String source;

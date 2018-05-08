@@ -6,13 +6,14 @@ import org.springframework.data.redis.core.RedisTemplate;
 import javax.annotation.Resource;
 
 /**
- *    model 缓存操作服务
+ * model 缓存操作服务
+ *
+ * @param
  * @author XiaYaLing
  * @date 2018/1/16
- * @param
  * @return
  */
-public class ModelRedisCacheService extends AbstractBaseRedisCacheService{
+public class ModelRedisCacheService extends AbstractBaseRedisCacheService {
 
     @Resource
     private RedisTemplate redisTemplate;
@@ -28,7 +29,7 @@ public class ModelRedisCacheService extends AbstractBaseRedisCacheService{
         if (RedisModelPropertiesUtil.getProperty("model.openCluster").equals("true")) {
 //            return this.redisTemplateCluster;
             return null;
-        } else if(RedisModelPropertiesUtil.getProperty("model.openCluster").equals("false")){
+        } else if (RedisModelPropertiesUtil.getProperty("model.openCluster").equals("false")) {
             return this.redisTemplate;
         }
         return null;

@@ -4,7 +4,6 @@ import com.bmsmart.spring.boot.springboot.config.RemoteProperties;
 import com.bmsmart.spring.boot.springboot.exception.BusinessException;
 import com.bmsmart.spring.boot.springboot.model.JsonResult;
 import com.bmsmart.spring.boot.springboot.model.SCUser;
-import com.bmsmart.spring.boot.springboot.service.ModelRedisCacheService;
 import com.bmsmart.spring.boot.springboot.service.ScUserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PathVariable;

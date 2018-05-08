@@ -16,8 +16,6 @@ import java.util.Map.Entry;
 
 /**
  * 记录信息:</br> 访问时间</br>Controller路径</br>对应方法名</br>请求参数信息</br>请求相对路径</br>请求处理时长
- *
- * @author Administrator
  */
 public class PrintLogInterceptor implements HandlerInterceptor {
 
